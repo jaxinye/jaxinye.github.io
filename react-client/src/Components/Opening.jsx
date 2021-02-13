@@ -3,18 +3,47 @@ import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
 
 const textContainer = {
-    hidden: { opacity: 1, scale: 0 },
+    hidden: { 
+        opacity: 1,
+        scale: 0 ,
+        transition: {
+            delay: 0.3,
+            when: "beforeChildren",
+            staggerChildren: 0.1
+        }
+        },
     visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delay: 0.3,
-        when: "beforeChildren",
-        staggerChildren: 0.1
-      }
+        opacity: 1,
+        scale: 1,
+        transition: {
+            delay: 0.3,
+            type: "spring",
+            stiffness: 400,
+            damping: 40
+        }
     }
   };
- 
+
+const photoContainer = {
+    hidden: { 
+        scale: 0 ,
+        transition: {
+            delay: 0.3,
+            type: "spring",
+            stiffness: 260,
+            damping: 20
+        }
+        },
+    visible: {
+        rotate: 180,
+        scale: 1,
+        transition: {
+            type: "spring",
+            stiffness: 260,
+            damping: 20
+        }
+    }
+}
 const item = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -23,16 +52,7 @@ const item = {
     }
 };
 
-// function shuffle(a) {
-//     var j, x, i;
-//     for (i = a.length - 1; i > 0; i--) {
-//         j = Math.floor(Math.random() * (i + 1));
-//         x = a[i];
-//         a[i] = a[j];
-//         a[j] = x;
-//     }
-//     return a;
-// }
+
 
 
 const texts = ["Hi there :) ", "I am Jiaxin, a first yr master student @Umich"]
@@ -40,21 +60,25 @@ class Opening extends Component{
     constructor(props){
         super(props)
         this.state = {
-            display: 1
+            visibility: 1,
+            display: 'flex'
         }
+        this.clickExplore = this.clickExplore.bind(this)
+    }
+    clickExplore(e){
+        e.preventDefault();
+        this.setState({visibility: 0, display: 'none'})
+        this.props.onExplore()
     }
     render(){
         return (
-        <div className="opening">
+            // style={{visibility: this.state.visibility?'visible':'hidden' }} 
+        <div className="opening" style={{display: this.state.display}}>
             <motion.img
               className="openingPhoto"
-              initial={{ scale: 0 }}
-              animate={{ rotate: 180, scale: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 20
-              }}
+              variants={photoContainer}
+              initial="hidden"
+              animate={this.state.visibility?'visible':'hidden' }
               src="./react-client/dist/img/Snapseed.jpg"
             />
             <div className="openingTextWrapper">
@@ -62,20 +86,22 @@ class Opening extends Component{
                 className="openingTextContainer"
                 variants={textContainer}
                 initial="hidden"
-                animate="visible"
+                animate={this.state.visibility?'visible':'hidden' }
                 >
-                    {texts.map((value, index) => (
-                    <motion.div key={index} className="openingText" variants={item}><span className="openingText">{value}</span></motion.div> 
-                    ))}
+                    
+                <motion.div className="openingTextFirst" variants={item}><span className="openingTextFirst">{texts[0]}</span></motion.div> 
+                <motion.div className="openingText" variants={item}><span className="openingText">{texts[1]}</span></motion.div>     
                 </motion.div>
 
                 <motion.div
                 className="openingButtonContainer"
                 variants={textContainer}
                 initial="hidden"
-                animate="visible"
+                animate={this.state.visibility?'visible':'hidden' }
                 >
-                    <motion.button className="glow-on-hover">Explore</motion.button>
+                    <motion.button className="glow-on-hover" onClick={this.clickExplore}>
+                        Explore
+                    </motion.button>
                 </motion.div>
             
             </div>

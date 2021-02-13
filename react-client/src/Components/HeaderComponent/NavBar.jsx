@@ -4,19 +4,23 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 const screens = [
   {
     title: "About",
-    color: "#ff0055"
+    color: "#ff0055",
+    path: "about",
   },
   {
     title: "Projects",
-    color: "#0099ff"
+    color: "#ffaa00",
+    path: "project",
   },
   {
     title: "Life",
-    color: "#22cc88"
+    color: "#22cc88",
+    path: "life",
   },
   {
     title: "Contact",
-    color: "#ffaa00"
+    color: "#0099ff",
+    path: "contact",
   }
 ];
 
@@ -24,7 +28,7 @@ class NavBar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selected: 0
+      selected: this.props.selected
     }
     this.setSelected = this.setSelected.bind(this)
   }
@@ -35,7 +39,7 @@ class NavBar extends Component {
 
   render() {
     return (
-      <header>
+      <div style={{position: 'fixed'}}>
         <AnimateSharedLayout>
           <ol style={{ transform: "translateZ(0)" }}>
             {screens.map(({ title, color }, i) => (
@@ -58,7 +62,7 @@ class NavBar extends Component {
             ))}
           </ol>
         </AnimateSharedLayout>
-      </header>
+      </div>
     )
   }
 }
