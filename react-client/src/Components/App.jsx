@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import { browserHistory } from 'react-router';
 import HomePage from './HomePage';
 import Opening from './Opening.jsx';
+import Menu from './Menu.jsx';
 import { motion, AnimateSharedLayout } from "framer-motion";
 
 const screens = [
@@ -52,8 +53,7 @@ class App extends Component {
     // console.log('render')
     return (
       <Router>
-        <header> 
-        <div style={{position: 'fixed'}}>
+        {/* <div style={{position: 'fixed'}}>
         <AnimateSharedLayout>
           <ol style={{ transform: "translateZ(0)" }}>
             {screens.map(({ title, color }, i) => (
@@ -76,11 +76,11 @@ class App extends Component {
             ))}
           </ol>
         </AnimateSharedLayout>
-      </div>
-        </header>
+      </div> */}
+      <Menu />
          
-        <Opening onExplore={this.onExplore}/>
-        <Menu å/>
+        {/* <Opening onExplore={this.onExplore}/> */}
+        
         {/* <div>
           
           <Route name="home" exact path="/" component={HomePage} />
