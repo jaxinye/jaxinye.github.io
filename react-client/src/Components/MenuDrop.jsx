@@ -8,8 +8,8 @@ const itemLength = 3
 
 export default class Menu {
 
-    constructor(scene, world, camera) {
-        const container = document.querySelector("#app");
+    constructor(scene, world, camera, renderer) {
+        // const container = document.querySelector("#app");
         this.navItems = [
             {innerText: "YJX"},
             {innerText: "In YOuR"},
@@ -20,6 +20,7 @@ export default class Menu {
         this.scene = scene
         this.world = world
         this.camera = camera
+        this.renderer = renderer
 
         this.loader = new THREE.FontLoader()
         this.clock = new THREE.Clock()
@@ -142,9 +143,11 @@ export default class Menu {
 
 
     onMouseMove(event) {
-        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-
+        var rect = this.renderer.domElement.getBoundingClientRect();
+        // this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+        // this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+        this.mouse.x = ((event.clientX - rect.left) / (rect.width - rect.left )) * 2 - 1;
+        this.mouse.y = - ((event.clientY - rect.top ) / (rect.bottom - rect.top)) * 2 + 1;
         this.raycaster.setFromCamera(this.mouse, this.camera)
 
         const intersects = this.raycaster.intersectObjects(this.scene.children, true)

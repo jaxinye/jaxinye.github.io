@@ -52,7 +52,7 @@ class App extends Component {
   render() {
     // console.log('render')
     return (
-      <Router>
+      <div className="flex-row-container">
         {/* <div style={{position: 'fixed'}}>
         <AnimateSharedLayout>
           <ol style={{ transform: "translateZ(0)" }}>
@@ -77,15 +77,10 @@ class App extends Component {
           </ol>
         </AnimateSharedLayout>
       </div> */}
-      <Menu />
+        <Menu />
          
         {/* <Opening onExplore={this.onExplore}/> */}
-        
-        {/* <div>
-          
-          <Route name="home" exact path="/" component={HomePage} />
-        </div> */}
-      </Router>
+      </div>
     )
   }
 }

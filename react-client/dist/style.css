@@ -223,3 +223,24 @@ ol {
   position: absolute;
   bottom: -4px;
 }
+
+.viewport {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-flow: row;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar {
+  display: block;
+  flex: 0 0 150px;
+  background-color: #555;
+  margin: 3px 4px 3px 4px;
+  box-sizing: border-box;
+  border: 1px solid #888;
+}

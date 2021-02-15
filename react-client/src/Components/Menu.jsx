@@ -11,29 +11,11 @@ class Menu extends Component {
 
     constructor(props){
         super(props)
-        this.state = {}
+        this.state = { width: window.innerWidth, height: window.innerHeight };
     }
 
     componentDidMount() {
-        // === THREE.JS CODE START ===
-        // this.setup()
-        // this.bindEvents()
-
-        // var scene = new THREE.Scene();
-        // var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-        // var renderer = new THREE.WebGLRenderer();
-        // renderer.setSize( window.innerWidth, window.innerHeight );
-        // document.body.appendChild( renderer.domElement );
-        // var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        // var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        // var cube = new THREE.Mesh( geometry, material );
-        // camera.position.z = 5;
-        // === THREE.JS EXAMPLE CODE END ===
-
-
-
-
-
+        window.addEventListener('resize', () => {this.onResize()})
         this.world = new C.World()
         this.world.gravity.set(0, -50, 0)
 
@@ -44,6 +26,7 @@ class Menu extends Component {
         this.setLights()
         this.setRender()
         this.addObjects()
+        
         var animate = () => {
           requestAnimationFrame( animate );
           this.renderer.render( this.scene, this.camera );
@@ -51,10 +34,17 @@ class Menu extends Component {
         animate();
         // this.setupDebug()
       }
-    
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.onResize);
+        this.mount.removeChild(this.renderer.domElement);
+    }
+
     onResize() {
-        const W = window.innerWidth;
-        const H = window.innerHeight;
+        // const W = window.innerWidth;
+        // const H = window.innerHeight;
+        const W = this.mount.clientWidth;
+        const H = this.mount.clientHeight;
         this.camera.aspect = W / H
 
         this.camera.top    = distance
@@ -64,11 +54,14 @@ class Menu extends Component {
 
         this.camera.updateProjectionMatrix()
         this.renderer.setSize(W, H)
+        this.renderer.render( this.scene, this.camera );
     }
 
     setCamera() {
-        const W = window.innerWidth;
-        const H = window.innerHeight;
+        // const W = window.innerWidth;
+        // const H = window.innerHeight;
+        const W = this.mount.clientWidth;
+        const H = this.mount.clientHeight;
         const aspect = W / H
 
         this.camera = new THREE.OrthographicCamera(-distance * aspect, distance * aspect, distance, -distance, -10, 100)
@@ -91,19 +84,20 @@ class Menu extends Component {
     }
 
     setRender() {
-        this.$stage = document.getElementById('app')
+        // this.$stage = document.getElementById('app')
         this.renderer = new THREE.WebGLRenderer();
-        this.$stage.appendChild(this.renderer.domElement );
+        // this.$stage.appendChild(this.renderer.domElement );
+        this.mount.appendChild(this.renderer.domElement);
 
         this.renderer.setClearColor(0x202533)
-        this.renderer.setSize(window.innerWidth, window.innerHeight)
+        this.renderer.setSize(this.mount.clientWidth, this.mount.clientHeight)
         this.renderer.setPixelRatio(window.devicePixelRatio)
 
         this.renderer.setAnimationLoop(() => { this.draw() })
     }
 
     addObjects() {
-        this.menu = new MenuDrop(this.scene, this.world, this.camera)
+        this.menu = new MenuDrop(this.scene, this.world, this.camera, this.renderer)
     }
 
     // setupDebug() {
@@ -129,7 +123,7 @@ class Menu extends Component {
 
     render() {
         return (
-        <div/>
+            <div className="viewport" ref={(mount) => { this.mount = mount }} />
         )
     }
 }
