@@ -89,7 +89,7 @@ class Menu extends Component {
         // this.$stage.appendChild(this.renderer.domElement );
         this.mount.appendChild(this.renderer.domElement);
 
-        this.renderer.setClearColor(0x202533)
+        this.renderer.setClearColor(0x0c0f13)
         this.renderer.setSize(this.mount.clientWidth, this.mount.clientHeight)
         this.renderer.setPixelRatio(window.devicePixelRatio)
 

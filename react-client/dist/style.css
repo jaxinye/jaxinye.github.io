@@ -5,40 +5,16 @@
   font-weight: 800;
 }
 html, body{
-    margin: 0;
+    /* margin: 0;
     height: 100vh;
-    background:  #393E41;
-}
-a:link{
-  text-decoration: none;
-}
-a:visited{
-  text-decoration: none;
-}
-header {
-    display: flex;
-    background-color: #393E41;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 400px;
-    color: white;
-}
-#headerButtons {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-.navButton {
-  float: right;
-}
-footer {
-  display: block;
-  width: 100%;
-  height: 50px;
-  background-color: black;
-  color: white;
+    background:  #0c0f13; */
+    margin: 0;
+    padding: 0;
+    background: #0c0f13;
+    /* overflow: hidden; */
+    font-family: 'Sulphur Point', sans-serif;
+    color: #8b8b8b;
+    font-size: 0.9rem;
 }
 
 #app{
@@ -47,148 +23,9 @@ footer {
   margin: 0 px;
   padding: 0 px;
   /* background: linear-gradient(180deg, #dcd9d5, #E7E5DF); */
-  background:  #393E41;
+  background:  #0c0f13;
 }
 
-.opening {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
-  align-content: center;
-  font-size: 40pt;
-}
-
-.openingPhoto{
-  width: 200px;
-  height: 200px;
-  background: white;
-  border-radius: 30px;
-  margin: 100 px;
-}
-.openingTextContainer{
-    width: 600px;
-    /* height: 120px; */
-    display: flex;
-    overflow: hidden;
-    margin: 0;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 15px;
-    margin-left: 100 px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
-}
-.openingTextContainer:first-child::first-letter{
-  font-size: 200%;
-}
-.openingButtonContainer{
-  width: 220px;
-  /* height: 120px; */
-  display: flex;
-  overflow: hidden;
-  margin: 0;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 15px;
-  margin-left: 100 px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50px;
-}
-.openingTextWrapper{
-  display: flex;
-  height: 220px;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-start;
-}
-
-.openingText{
-  margin-left: 10px;
-  font-size: 20pt;
-  color: #dcd9d5;
-}
-.openingTextFirst{
-  margin-left: 10px;
-  font-size: 20pt;
-  color: #dcd9d5;
-}
-.openingTextFirst::first-letter{
-  font-size: 200%;
-}
-.buttonText{
-  margin-left: 10px;
-  font-size: 20pt;
-  color: #dcd9d5;
-}
-
-.glow-on-hover {
-  width: 220px;
-  height: 50px;
-  border: none;
-  outline: none;
-  color: #dcd9d5;
-  background: rgba(169, 166, 162, 0);
-  cursor: pointer;
-  position: relative;
-  z-index: 0;
-  border-radius: 30px;
-  font-size: 30pt;
-}
-
-.glow-on-hover:before {
-  content: '';
-  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-  position: absolute;
-  top: -2px;
-  left:-2px;
-  background-size: 400%;
-  z-index: -1;
-  filter: blur(5px);
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  animation: glowing 20s linear infinite;
-  opacity: 0;
-  transition: opacity .3s ease-in-out;
-  border-radius: 30px;
-}
-
-.glow-on-hover:active {
-  color: rgba(169, 166, 162, 0);
-}
-
-.glow-on-hover:active:after {
-  background: transparent;
-}
-
-.glow-on-hover:hover:before {
-  opacity: 1;
-
-}
-.glow-on-hover:after {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(169, 166, 162, 0);
-  left: 0;
-  top: 0;
-  border-radius: 30px;
-}
-
-@keyframes glowing {
-  0% { background-position: 0 0; }
-  50% { background-position: 400% 0; }
-  100% { background-position: 0 0; }
-}
 
 ol,
 li {
@@ -232,8 +69,8 @@ ol {
 .flex-row-container {
   display: flex;
   flex-flow: row;
-  height: 100%;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 .sidebar {
@@ -243,4 +80,26 @@ ol {
   margin: 3px 4px 3px 4px;
   box-sizing: border-box;
   border: 1px solid #888;
+}
+
+.scrollArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+/* .frame {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 1.5rem;
+  z-index: 2;
+} */
+
+canvas{
+  position: absolute;
 }
