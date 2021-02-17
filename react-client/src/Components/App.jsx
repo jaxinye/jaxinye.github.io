@@ -114,6 +114,13 @@ function Pages() {
             </Block>
           </Content>
         </Block>
+        {/* <Block factor={1} offset={1}>
+          <Html position={[-contentMaxWidth / 2, -contentMaxWidth / 2 / aspect - 0.4, 1]}>
+            <div className="flex-row-container">
+              <Menu />
+            </div>
+          </Html>
+        </Block> */}
     </>
   )
 }
@@ -131,14 +138,13 @@ function App() {
           {/* <Diamonds /> */}
           <Startup />
         </Suspense>
-        
       </Canvas>
 
       <div className="scrollArea" ref={scrollArea} onScroll={onScroll}>
         <div style={{ height: `${state.pages * 100}vh` }} />
         <div className="flex-row-container">
           <Menu />
-      </div>
+        </div>
       </div>
 
 
