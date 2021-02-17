@@ -1,6 +1,6 @@
 import React, { Component, Suspense, useEffect, useRef, useMemo } from 'react';
 import { Canvas, Dom, useLoader, useFrame } from "react-three-fiber"
-import {Html} from "@react-three/drei"
+import { Html, useTexture } from "@react-three/drei"
 import { TextureLoader, LinearFilter } from "three"
 import lerp from "lerp"
 import { Text, MultilineText } from "./Text"
@@ -10,11 +10,20 @@ import { Block, useBlock } from "./blocks"
 import state from "./store"
 import Menu from './Menu.jsx';
 
-function Plane({ color = "white", ...props }) {
+function Plane({ color = "white", map, ...props }) {
+  const { viewportHeight, offsetFactor } = useBlock()
+  const material = useRef()
+  let last = state.top.current
+  useFrame(() => {
+    const { pages, top } = state
+    material.current.scale = lerp(material.current.scale, offsetFactor - top.current / ((pages - 1) * viewportHeight * 100), 0.1)
+    material.current.shift = lerp(material.current.shift, (top.current - last) / 70, 0.1)
+    last = top.current
+  })
   return (
     <mesh {...props}>
-      <planeBufferGeometry attach="geometry" />
-      <meshBasicMaterial attach="material" color={color} />
+      <planeBufferGeometry attach="geometry" args={[1, 1, 32, 32]}/>
+      <customMaterial ref={material} attach="material" color={color} map={map} />
     </mesh>
   )
 }
@@ -47,13 +56,13 @@ function Cross() {
   )
 }
 
-function Content({ left, children }) {
+function Content({ left, children, map }) {
   const { contentMaxWidth, canvasWidth, margin } = useBlock()
   const aspect = 1.75
   const alignRight = (canvasWidth - contentMaxWidth - margin) / 2
   return (
     <group position={[alignRight * (left ? -1 : 1), 0, 0]}>
-      <Plane scale={[contentMaxWidth, contentMaxWidth / aspect, 1]} color="#bfe2ca" />
+      <Plane scale={[contentMaxWidth, contentMaxWidth / aspect, 1]} map={map}/>
       {children}
     </group>
   )
@@ -67,22 +76,31 @@ function Stripe() {
 }
 
 function Pages() {
+  console.log(state.images)
+  //const textures = useTexture("./react-client/public/photo-1515036551567-bf1198cccc35.jpeg")
+  const texture1 = new TextureLoader().load( "./react-client/public/835977.jpg" )
+  const texture2 = new TextureLoader().load( "./react-client/public/835978.jpg" )
+  const texture3 = new TextureLoader().load( "./react-client/public/835979.jpg" )
+  const textures = [texture1, texture2, texture3]
+  console.log(textures)
+  const [img1, img2, img3] = textures.map(texture => ((texture.minFilter = LinearFilter), texture))
+  console.log(img1)
   const { contentMaxWidth, mobile } = useBlock()
   const aspect = 1.75
-  const pixelWidth = contentMaxWidth * state.zoom
+  const pixelWidth = contentMaxWidth * state.zoom * 75
   return (
     <>
       {/* First section */}
       <Block factor={1.5} offset={0}>
-          <Content left >
-            <Html style={{ width: pixelWidth / (mobile ? 1 : 2), textAlign: "left" }} position={[-contentMaxWidth / 2, -contentMaxWidth / 2 / aspect - 0.4, 1]}>
+          <Content left map={img1}>
+            <Html style={{ width: pixelWidth / (mobile ? 1 : 2)}} position={[-contentMaxWidth / 2, -contentMaxWidth / 2 / aspect - 0.4, 1]}>
               The substance can take you to heaven but it can also take you to hell.
             </Html>
           </Content>
         </Block>
         {/* Second section */}
         <Block factor={2.0} offset={1}>
-          <Content />
+          <Content map={img2}/>
         </Block>
         {/* Stripe */}
         <Block factor={-1.0} offset={1}>
@@ -90,7 +108,7 @@ function Pages() {
         </Block>
         {/* Last section */}
         <Block factor={1.5} offset={2}>
-          <Content left>
+          <Content left map={img3}>
             <Block factor={-0.5}>
               <Cross />
             </Block>
@@ -101,13 +119,14 @@ function Pages() {
 }
 
 function App() {
+    // const textures = useTexture("http://placehold.it/120x120&text=image1")
     const scrollArea = useRef()
     const onScroll = e => (state.top.current = e.target.scrollTop)
     useEffect(() => void onScroll({ target: scrollArea.current }), [])
     return (
       <>
       <Canvas className="canvas" concurrent pixelRatio={1} orthographic camera={{ zoom: 75, position: [0, 0, 500] }}>
-        <Suspense fallback={<Dom center className="loading" children="Loading..." />}>
+        <Suspense fallback={<Html center className="loading" children="Loading..." />}>
           <Pages />
           {/* <Diamonds /> */}
           <Startup />
@@ -117,10 +136,11 @@ function App() {
 
       <div className="scrollArea" ref={scrollArea} onScroll={onScroll}>
         <div style={{ height: `${state.pages * 100}vh` }} />
-        <div className="flex-row-container">
-        <Menu />
-        </div>
       </div>
+
+       <div className="flex-row-container">
+          <Menu />
+        </div>
       </>
     )
 }
