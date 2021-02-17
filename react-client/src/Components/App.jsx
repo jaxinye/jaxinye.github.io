@@ -136,11 +136,12 @@ function App() {
 
       <div className="scrollArea" ref={scrollArea} onScroll={onScroll}>
         <div style={{ height: `${state.pages * 100}vh` }} />
+        <div className="flex-row-container">
+          <Menu />
+      </div>
       </div>
 
-       <div className="flex-row-container">
-          <Menu />
-        </div>
+
       </>
     )
 }
