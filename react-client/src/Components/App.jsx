@@ -76,51 +76,57 @@ function Stripe() {
 }
 
 function Pages() {
-  console.log(state.images)
   //const textures = useTexture("./react-client/public/photo-1515036551567-bf1198cccc35.jpeg")
-  const texture1 = new TextureLoader().load( "./react-client/public/835977.jpg" )
+  const texture1 = new TextureLoader().load( "./react-client/public/IMG_6982.JPG" )
   const texture2 = new TextureLoader().load( "./react-client/public/835978.jpg" )
   const texture3 = new TextureLoader().load( "./react-client/public/835979.jpg" )
   const textures = [texture1, texture2, texture3]
-  console.log(textures)
   const [img1, img2, img3] = textures.map(texture => ((texture.minFilter = LinearFilter), texture))
-  console.log(img1)
-  const { contentMaxWidth, mobile } = useBlock()
+  const { contentMaxWidth: w, canvasWidth, canvasHeight, mobile } = useBlock()
   const aspect = 1.75
-  const pixelWidth = contentMaxWidth * state.zoom * 75
+  const pixelWidth = w * state.zoom * 75
+  const size = aspect < 1 && !mobile ? 0.65 : 1
   return (
     <>
       {/* First section */}
-      <Block factor={1.5} offset={0}>
-          <Content left map={img1}>
-            <Html style={{ width: pixelWidth / (mobile ? 1 : 2)}} position={[-contentMaxWidth / 2, -contentMaxWidth / 2 / aspect - 0.4, 1]}>
-              The substance can take you to heaven but it can also take you to hell.
-            </Html>
-          </Content>
-        </Block>
-        {/* Second section */}
-        <Block factor={2.0} offset={1}>
-          <Content map={img2}/>
-        </Block>
-        {/* Stripe */}
-        <Block factor={-1.0} offset={1}>
-          <Stripe />
-        </Block>
-        {/* Last section */}
-        <Block factor={1.5} offset={2}>
-          <Content left map={img3}>
-            <Block factor={-0.5}>
-              <Cross />
-            </Block>
-          </Content>
-        </Block>
-        {/* <Block factor={1} offset={1}>
-          <Html position={[-contentMaxWidth / 2, -contentMaxWidth / 2 / aspect - 0.4, 1]}>
-            <div className="flex-row-container">
-              <Menu />
-            </div>
+      <Block factor={1.5} offset={0.1}>
+        <Content left map={img1}>
+          <Html style={{ width: pixelWidth / (mobile ? 1 : 2)}} position={[-w / 2, -w / 2 / aspect - 0.4, 1]}>
+            The substance can take you to heaven but it can also take you to hell.
           </Html>
-        </Block> */}
+        </Content>
+        <MultilineText top left size={w * 0.1} lineHeight={w / 5} position={[(w / 3.5) * size, (w * size * 0.5) / aspect / 3, -11]} color="#2fe8c3" text={"YJX"} />
+        <Text opacity={0.7} size={w * 0.07} color="#000" position={[(w / 2) * size, (w * size * 0.5) / aspect / 3 - w / 5, -10]}>
+          {"FEE@FB"}
+        </Text>
+      </Block>
+      <Block factor={1.2} offset={-0.2}>
+        <MultilineText top left size={w * 0.15} lineHeight={w / 5} position={[-w / 3.5, 0, -1]} color="#2fe8c3" text={"INTRO"} />
+      </Block>
+
+      {/* Second section */}
+      <Block factor={2.0} offset={1}>
+        <Content map={img2}/>
+      </Block>
+      {/* Stripe */}
+      <Block factor={-1.0} offset={1}>
+        <Stripe />
+      </Block>
+      {/* Last section */}
+      <Block factor={1.5} offset={2}>
+        <Content left map={img3}>
+          <Block factor={-0.5}>
+            <Cross />
+          </Block>
+        </Content>
+      </Block>
+      {/* <Block factor={1} offset={1}>
+        <Html position={[-contentMaxWidth / 2, -contentMaxWidth / 2 / aspect - 0.4, 1]}>
+          <div className="flex-row-container">
+            <Menu />
+          </div>
+        </Html>
+      </Block> */}
     </>
   )
 }

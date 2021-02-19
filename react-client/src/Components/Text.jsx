@@ -12,6 +12,8 @@ function Text({ children, size = 1, left, right, top, bottom, color = "white", o
   //   const geom = new TextBufferGeometry(children,
   //     {font, size: 1, height, curveSegments: 32}, [children])
   // });
+  // const data = new FontLoader().load("./react-client/public/MOONGET_Heavy.blob")
+  console.log(data)
   const geom = usePromise(() => new Promise(res => res(new TextBufferGeometry(children, { font: data, size: 1, height, curveSegments: 32 }) )), [children])
   const onUpdate = useCallback(
     self => {
