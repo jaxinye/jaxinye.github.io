@@ -91,11 +91,11 @@ function Pages() {
       {/* First section */}
       <Block factor={1.5} offset={0.1}>
         <Content left map={img1}>
-          <Html style={{ width: pixelWidth / (mobile ? 1 : 2)}} position={[-w / 2, -w / 2 / aspect - 0.4, 1]}>
-            The substance can take you to heaven but it can also take you to hell.
+          <Html style={{ width: pixelWidth * 2 / (mobile ? 1 : 2)}} position={[-w / 2, -w / 2 / aspect - 0.4, 1]}>
+            Jiaxin Ye, a.k.a YJX/YE/葉佳鑫, a nocturnal programmer who believes JavaScript can take you to heaven but it can also take you to hell. I love all brilliant and multicolored stuff. Design is all about the emotions and colors 🌈. 
           </Html>
         </Content>
-        <MultilineText top left size={w * 0.1} lineHeight={w / 5} position={[(w / 3.5) * size, (w * size * 0.5) / aspect / 3, -11]} color="#2fe8c3" text={"YJX"} />
+        <MultilineText top left size={w * 0.1} lineHeight={w / 5} position={[(w / 3.5) * size, (w * size * 0.5) / aspect / 3, -11]} color="#2fe8c3" text={"$YJX"} />
         <Text opacity={0.7} size={w * 0.07} color="#000" position={[(w / 2) * size, (w * size * 0.5) / aspect / 3 - w / 5, -10]}>
           {"FEE@FB"}
         </Text>
@@ -111,6 +111,18 @@ function Pages() {
       {/* Second section */}
       <Block factor={2.0} offset={1}>
         <Content map={img2}/>
+        <Text opacity={1} size={w * 0.07} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 + w / 10, 0]}>
+          {"MHW"}
+        </Text>
+        <Text opacity={0.7} size={w * 0.07} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 , 0]}>
+          {"Splatoon!!"}
+        </Text>
+        <Text opacity={0.4} size={w * 0.07} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 - w / 10, 0]}>
+          {"LoZ"}
+        </Text>
+        <Text opacity={0.2} size={w * 0.07} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 - 2 * w / 10, 0]}>
+          {"王者荣耀"}
+        </Text>
       </Block>
       {/* Stripe */}
       <Block factor={-1.0} offset={1}>

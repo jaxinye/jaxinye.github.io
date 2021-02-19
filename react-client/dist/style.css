@@ -1,9 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Sulphur+Point&display=swap');
+
 * {
   margin: 0px;
   padding: 0px;
-  font-family: Montserrat, sans-serif;
+  font-family: 'Sulphur Point', sans-serif;
   font-weight: 800;
 }
+
+:root {
+  font-size: 20px;
+}
+
 html, body{
     /* margin: 0;
     height: 100vh;
