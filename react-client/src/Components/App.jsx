@@ -104,6 +104,10 @@ function Pages() {
         <MultilineText top left size={w * 0.15} lineHeight={w / 5} position={[-w / 3.5, 0, -1]} color="#2fe8c3" text={"INTRO"} />
       </Block>
 
+      <Block factor={1.6} offset={1-0.25}>
+        <MultilineText top left size={w * 0.15} lineHeight={w / 5} position={[-w / 3.5, 0, -1]} color="#ee9ca7" text={"GAME!?"} />
+      </Block>
+
       {/* Second section */}
       <Block factor={2.0} offset={1}>
         <Content map={img2}/>
