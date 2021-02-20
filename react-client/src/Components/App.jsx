@@ -1,15 +1,58 @@
 import React, { Component, Suspense, useEffect, useRef, useMemo } from 'react';
 import { Canvas, Dom, useLoader, useFrame } from "react-three-fiber"
-import { Html, useTexture } from "@react-three/drei"
+import { Html, useTexture, OrbitControls } from "@react-three/drei"
 import { TextureLoader, LinearFilter } from "three"
 import lerp from "lerp"
 import { Text, MultilineText } from "./Text"
 // import Plane from "./Plane"
 import "./CustomMaterial"
+import "./dotmaterial"
 import { Block, useBlock } from "./blocks"
 import state from "./store"
 import Menu from './Menu.jsx';
 
+
+const ROW = 50
+const COL = 50
+const NUM = ROW * COL
+
+function Particles({ pointCount }) {
+  const { contentMaxWidth } = useBlock()
+  const [coords, sizes] = useMemo(() => {
+    const initialCoords = []
+    const initialSizes = []
+    let i = 0
+    for (let y = 0; y < ROW; y += 1) {
+      for (let x = 0; x < COL; x += 1) {
+        initialCoords.push(x)
+        initialCoords.push(y)
+        initialCoords.push(i)
+        initialSizes.push(Math.random() < 0.03 ? 15 : 6)
+        i++
+      }
+    }
+
+    const coords = new Float32Array(initialCoords)
+    const sizes = new Float32Array(initialSizes)
+    return [coords, sizes]
+  }, [pointCount])
+
+  const geom = useRef()
+  useFrame((state) => {
+    geom.current.material.uniforms.time.value = state.clock.getElapsedTime()
+    geom.current.geometry.verticesNeedUpdate = true
+  })
+
+  return (
+    <points ref={geom} position={[0, 10, 0]} rotation={[-Math.PI / 4, 0, Math.PI / 6]}>
+      <bufferGeometry>
+        <bufferAttribute attachObject={["attributes", "position"]} count={coords.length / 3} array={coords} itemSize={3} />
+        <bufferAttribute attachObject={["attributes", "size"]} count={sizes.length} array={sizes} itemSize={1} />
+      </bufferGeometry>
+      <dotMaterial />
+    </points>
+  )
+}
 function Plane({ color = "white", map, ...props }) {
   const { viewportHeight, offsetFactor } = useBlock()
   const material = useRef()
@@ -71,7 +114,7 @@ function Content({ left, children, map }) {
 function Stripe() {
   const { contentMaxWidth } = useBlock()
   return (
-    <Plane scale={[100, contentMaxWidth, 1]} rotation={[0, 0, Math.PI / 4]} position={[0, 0, -1]} color="#000" />
+    <Plane scale={[100, contentMaxWidth, 1]} rotation={[0, 0, Math.PI / 4]} position={[0, 0, -20]} color="#000" />
   )
 }
 
@@ -79,7 +122,7 @@ function Pages() {
   //const textures = useTexture("./react-client/public/photo-1515036551567-bf1198cccc35.jpeg")
   const texture1 = new TextureLoader().load( "./react-client/public/IMG_6982.JPG" )
   const texture2 = new TextureLoader().load( "./react-client/public/835978.jpg" )
-  const texture3 = new TextureLoader().load( "./react-client/public/835979.jpg" )
+  const texture3 = new TextureLoader().load( "./react-client/public/cat.jpg" )
   const textures = [texture1, texture2, texture3]
   const [img1, img2, img3] = textures.map(texture => ((texture.minFilter = LinearFilter), texture))
   const { contentMaxWidth: w, canvasWidth, canvasHeight, mobile } = useBlock()
@@ -95,8 +138,8 @@ function Pages() {
             Jiaxin Ye, a.k.a YJX/YE/葉佳鑫, a nocturnal programmer who believes JavaScript can take you to heaven but it can also take you to hell. I love all brilliant and multicolored stuff. Design is all about the emotions and colors 🌈. 
           </Html>
         </Content>
-        <MultilineText top left size={w * 0.1} lineHeight={w / 5} position={[(w / 3.5) * size, (w * size * 0.5) / aspect / 3, -11]} color="#2fe8c3" text={"$YJX"} />
-        <Text opacity={0.7} size={w * 0.07} color="#000" position={[(w / 2) * size, (w * size * 0.5) / aspect / 3 - w / 5, -10]}>
+        <MultilineText top left size={w * 0.1} lineHeight={w / 5} position={[(w / 3.5) * size, (w * size * 0.5) / aspect / 3, -21]} color="#2fe8c3" text={"$YJX"} />
+        <Text opacity={0.7} size={w * 0.07} color="#000" position={[(w / 2) * size, (w * size * 0.5) / aspect / 3 - w / 5, -21]}>
           {"FEE@FB"}
         </Text>
       </Block>
@@ -104,14 +147,20 @@ function Pages() {
         <MultilineText top left size={w * 0.15} lineHeight={w / 5} position={[-w / 3.5, 0, -1]} color="#2fe8c3" text={"INTRO"} />
       </Block>
 
-      <Block factor={1.6} offset={1-0.25}>
-        <MultilineText top left size={w * 0.15} lineHeight={w / 5} position={[-w / 3.5, 0, -1]} color="#ee9ca7" text={"GAME!?"} />
+      <Block factor={1.6} offset={1-0.38}>
+        <MultilineText top left size={w * 0.15} lineHeight={w / 5} position={[-w / 3.5, 0, -1]} color="#ee9ca7" text={"GAME\nFIRST!!"} />
       </Block>
 
       {/* Second section */}
       <Block factor={2.0} offset={1}>
-        <Content map={img2}/>
-        <Text opacity={1} size={w * 0.07} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 + w / 10, 0]}>
+        <Content map={img2}>
+          <Html style={{ width: pixelWidth * 2 / (mobile ? 1 : 2)}} position={[(-w * size) / 2, -w / 2 / aspect - 0.4, 1]}>
+            THE Coral Highlands Killing Machine. 🎰
+            S+ Splat Zones Player, Favorite MAP - Walleye Warehouse, 🔫
+            Top tier midlaner in WZRY (王者荣耀), 不服solo哈. 👁 
+          </Html>
+        </Content>
+        <Text opacity={1} size={w * 0.07} rotation={[0, 0, Math.PI / 4]} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 + w / 10, 0]}>
           {"MHW"}
         </Text>
         <Text opacity={0.7} size={w * 0.07} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 , 0]}>
@@ -121,28 +170,30 @@ function Pages() {
           {"LoZ"}
         </Text>
         <Text opacity={0.2} size={w * 0.07} color="#ffdde1" position={[(-w / 2) * size, (w * size * 0.5) / aspect / 3 - 2 * w / 10, 0]}>
-          {"王者荣耀"}
+          {"wzry"}
         </Text>
+      </Block>
+
+      <Block factor={2.5} offset={1.5}>
+        <MultilineText top left size={w * 0.15} rotation={[0, 0, Math.PI / 6]} lineHeight={w / 5} position={[-w / 2.5, (w * size ) / aspect / 3, -1]} color="#f7971e" text={"MEET\nMY\nBAE(=.=)\n.\n.\n."} />
+        {/* <Particles pointCount={NUM} />
+        <OrbitControls /> */}
       </Block>
       {/* Stripe */}
       <Block factor={-1.0} offset={1}>
         <Stripe />
       </Block>
       {/* Last section */}
-      <Block factor={1.5} offset={2}>
+      <Block factor={3} offset={2}>
         <Content left map={img3}>
-          <Block factor={-0.5}>
+          {/* <Block factor={-0.5}>
             <Cross />
-          </Block>
+          </Block> */}
         </Content>
+        <Text opacity={1} size={w * 0.07} color="#ffd200" position={[(w / 2) * size, (w * size * 0.5) / aspect / 3 - w / 5, 0]}>
+          {"Boots"}
+        </Text>
       </Block>
-      {/* <Block factor={1} offset={1}>
-        <Html position={[-contentMaxWidth / 2, -contentMaxWidth / 2 / aspect - 0.4, 1]}>
-          <div className="flex-row-container">
-            <Menu />
-          </div>
-        </Html>
-      </Block> */}
     </>
   )
 }
@@ -168,7 +219,6 @@ function App() {
           <Menu />
         </div>
       </div>
-
 
       </>
     )
